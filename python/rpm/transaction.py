@@ -1,6 +1,14 @@
+from __future__ import with_statement
+
 import sys
 import rpm
 from rpm._rpm import ts as TransactionSetCore
+
+if sys.version_info[0] == 3:
+    _string_types = str,
+else:
+    _string_types = basestring,
+
 
 # TODO: migrate relevant documentation from C-side
 class TransactionSet(TransactionSetCore):
@@ -55,7 +63,7 @@ class TransactionSet(TransactionSetCore):
             return tuple(keys)
 
     def _f2hdr(self, item):
-        if isinstance(item, str):
+        if isinstance(item, _string_types):
             with open(item) as f:
                 header = self.hdrFromFdno(f)
         elif isinstance(item, rpm.hdr):
